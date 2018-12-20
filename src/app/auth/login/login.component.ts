@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { loginValidationMessages } from 'src/app/models/validation-messages';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { AuthService } from '../auth.service';
+import { AuthData } from '../auth-data.model';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +16,8 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -26,7 +29,11 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.loginForm.value);
+    const userAuthData: AuthData = {
+      email: this.email.value,
+      password: this.password.value
+    };
+    this.authService.login(userAuthData);
   }
 
   get email() { return this.loginForm.get('email'); }
